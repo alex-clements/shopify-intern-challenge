@@ -37,7 +37,9 @@ export default function ApplicationMain(props : any) {
         setLoadMoreData(false);
     }
 
-    const handleMenuItemClick = (e : string) => {
+    type ViewMode = "random" | "chronological" | "saved";
+
+    const handleMenuItemClick = (e : ViewMode) => {
         setViewMode(e);
         localStorage.setItem("viewMode", e);
         window.location.reload();
