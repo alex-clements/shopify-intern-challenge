@@ -18,3 +18,7 @@ The app lets users display the pictures in random order, or reverse-chronologica
     - Component library, where the styled components were fetched
 - Framer Motion
     - Animation library used for the logo animation, and the card animations
+
+## Demo
+
+![](spacestagram-demo.gif)
