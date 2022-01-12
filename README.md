@@ -11,6 +11,10 @@ The app lets users display the pictures in random order, or reverse-chronologica
 ## Technologies Used
 
 - React
+    - Used as the front-end web development framework
 - Typescript
+    - Language used to write all functionality in the app
 - Material UI
+    - Component library, where the styled components were fetched
 - Framer Motion
+    - Animation library used for the logo animation, and the card animations
