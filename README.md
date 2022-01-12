@@ -1,9 +1,16 @@
 # Spacestagram
-## Shopify Intern Challenge - 2022
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-The live version of the project can be found [here](https://alex-clements.github.io/spacestagram/).
 
 ## Overview
 
-This project is a small instagram-like application that uses NASA's Astronomy Picture of the Day API to display space pictures.
+[Spacestagram](https://alex-clements.github.io/spacestagram/) is a photo viewing app that uses NASA's Astronomy Picture of the Day API to display cool pictures of space.
+
+## Functionality
+
+The app lets users display the pictures in random order, or reverse-chronological order. Users can tap on any of the image cards for a detailed description of the picture, and can also "like" the pictures. Users also have the ability to view their list of "liked" pictures.
+
+## Technologies Used
+
+- React
+- Typescript
+- Material UI
+- Framer Motion
