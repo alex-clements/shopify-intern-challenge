@@ -9,7 +9,6 @@ export default function CardMediaComponent(props : any) {
 
     const handleLoad = () => {
         setImageLoaded(true);
-        console.log("Image loaded: ", imageData['title']);
     }
 
     const variants = {

@@ -27,12 +27,12 @@ export default function ImageCard(props : any) {
 
     const initialStuff = {
         "opacity": "0%",
-        "box-shadow": "0px 2px 0px 2px #888888",
+        "boxShadow": "0px 2px 0px 2px #888888",
     }
 
     const variants = {
         "opacity": "100%",
-        "box-shadow": mouseHovering ? "1px 5px 5px 10px #888888" : "0px 2px 1px 3px #888888",
+        "boxShadow": mouseHovering ? "1px 5px 5px 10px #888888" : "0px 2px 1px 3px #888888",
     }
 
     const handleMouseEnter = () => {
