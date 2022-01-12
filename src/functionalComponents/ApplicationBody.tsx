@@ -1,13 +1,17 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 import ImageCard from './ImageCard';
-import Grid from '@mui/material/Grid';
-import { CircularProgress } from '@mui/material';
 import getStorageItems from '../scripts/getStorageItems';
 import fetchDataAbstract from '../scripts/fetchDataAbstract';
+import {HelperFunctions} from '../scripts/HelperFunctions';
+import CustomProgress from './CustomProgress';
+import fetchSavedData from '../scripts/fetchSavedData';
 
 
 export default function ApplicationBody(props : any) {
+    let helper_functions : HelperFunctions = new HelperFunctions();
+
+
     const [imageData, setImageData] = useState<Array<any>>([]);
     const [imageDataLoaded, setImageDataLoaded] = useState(false);
     const [viewMode, setViewMode] = useState(props.viewMode);
@@ -16,26 +20,37 @@ export default function ApplicationBody(props : any) {
     const [savedImageDates, setSavedImageDates] = useState(getStorageItems());
 
     useEffect(() => {
-        console.log("Application Body");
-        if (viewMode === "random") {
-            fetchImageDataRandom();
-        } else if (viewMode === "chronological") {
-            fetchImageDataChron();
-        } else if (viewMode === "saved") {
-            fetchImageDataSaved();
+        switch (viewMode) {
+            case "random": {
+                fetchImageDataRandom();
+                break;
+            }
+            case "chronological": {
+                fetchImageDataChron();
+                break;
+            }
+            case "saved": {
+                fetchImageDataSaved();
+                break;
+            }
         }
     }, [])
 
     useEffect(() => {
         if (props.loadMoreData) {
-            if (viewMode == "random") {
-                fetchAdditionalDataRandom();
-            } else if (viewMode === "chronological") {
-                fetchAdditionalDataChron();
-            } else if (viewMode === "saved") {
-                fetchImageDataSaved();
+            switch(viewMode) {
+                case "random": {
+                    fetchAdditionalDataRandom();
+                    break;
+                }
+                case "chronological": {
+                    fetchAdditionalDataChron();
+                    break;
+                }
+                case "saved": {
+                    fetchAdditionalSavedImage();
+                }
             }
-            
         }
     }, [props.loadMoreData]);
 
@@ -43,121 +58,86 @@ export default function ApplicationBody(props : any) {
         setViewMode(props.viewMode);
     }, [props.viewMode])
 
-    const fetchImageDataChron = () => {
-        let startDate : Date = new Date();
-        let endDate : Date = new Date();
-
-        startDate.setDate(new Date(nextAvailableDate).getDate());
-        endDate.setDate(new Date(nextAvailableDate).getDate() - 5);
-
-        let startDateString : string = formatDate(startDate);
-        let endDateString : string = formatDate(endDate);
-
-        let apiString = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&start_date=" + endDateString + "&end_date=" + startDateString;
-
-        fetch(apiString)
-        .then(response => response.json())
-        .then(data => imageDataHandler(data));
-
-        let nextDate : Date = new Date();
-        nextDate.setDate(startDate.getDate() - 6);
-        setNextAvailableDate(nextDate.toString());
-        console.log("Next Date = " + nextDate);
-    }
-
     const fetchImageDataSaved = () => {
         let allDates : Array<string> = savedImageDates;
         let index : number = currentSavedIndex;
         let allDatesLength = allDates.length;
-        fetchSavedImageOne(allDates[0]);
+        let myArray : Array<string> = [];
+        var i : number;
 
-        var i;
-
-        for (i = index + 1; i < index + 5; i++) {
+        for (i = index; i < index + 5; i++) {
             if (i < allDatesLength) {
-                fetchAdditionalSavedImage(allDates[i])
+                myArray.push(allDates[i])
             }
         }
 
-        if (i >= allDates.length) {
-            console.log("i = " + i);
-            console.log("allDates.length = " + allDates.length);
-            props.onNoMoreData();
-        }
+        fetchSavedData(myArray)
+        .then(data => savedImageDataHandler(data))
+        .then(() => {
+            if (i >= allDates.length) {
+                props.onNoMoreData();
+            }
+        })
 
         setCurrentSavedIndex(index + 5);
     }
 
-    const fetchAdditionalSavedImage = (dateString : string) => {
-        console.log(dateString)
-        let apiString : string = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&date=" + dateString;
-        fetch(apiString)
-        .then(response => response.json())
-        .then(data => fetchAdditionalSavedImageHandler(data));
+    const fetchAdditionalSavedImage = () => {
+        let allDates : Array<string> = savedImageDates;
+        let index : number = currentSavedIndex;
+        let allDatesLength = allDates.length;
+        let myArray : Array<string> = [];
+        var i : number;
+
+        for (i = index; i < index + 5; i++) {
+            if (i < allDatesLength) {
+                myArray.push(allDates[i])
+            }
+        }
+
+        fetchSavedData(myArray)
+        .then(data => additionalImageDataHandler(data))
+        .then(() => {
+            if (i >= allDates.length) {
+                props.onNoMoreData();
+            }
+        });
+        setCurrentSavedIndex(index + 5);
+        
     }
 
-    const fetchAdditionalSavedImageHandler = (data : any) => {
-        const newImageData = imageData;
-        newImageData.push(data);
-        setImageData(newImageData);
-    }
+    const fetchImageDataChron = async () => {
+        let startDateEndDateStrings = helper_functions.getEndDateStartDate(nextAvailableDate);
+        let startDateString : string = startDateEndDateStrings[0];
+        let endDateString : string = startDateEndDateStrings[1];
 
-    const fetchSavedImageOne = (dateString : string) => {
-        console.log(dateString);
-        let apiString : string = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&date=" + dateString;
-        fetch(apiString)
-        .then(response => response.json())
-        .then(data => savedImageDataHandler(data));
-    }
+        let apiString = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&start_date=" + endDateString + "&end_date=" + startDateString;
+        fetchDataAbstract(apiString).then(new_data => imageDataHandler(new_data));
 
-    const savedImageDataHandler = (data : any) => {
-        let myArray = imageData;
-        myArray.push(data);
-        setImageData(myArray);
-        setImageDataLoaded(true);
-        props.onDataLoaded();
+        let nextDate : string = helper_functions.getNextDate(nextAvailableDate);
+        setNextAvailableDate(nextDate);
     }
 
     const fetchAdditionalDataChron = () => {
-        let startDate : Date = new Date(nextAvailableDate);
-        let endDate : Date = new Date(nextAvailableDate);
-
-        endDate.setDate(startDate.getDate() - 5);
-        
-        let startDateString : string = formatDate(startDate);
-        let endDateString : string = formatDate(endDate);
+        let startDateEndDateStrings = helper_functions.getEndDateStartDate(nextAvailableDate);
+        let startDateString : string = startDateEndDateStrings[0];
+        let endDateString : string = startDateEndDateStrings[1];
 
         let apiString = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&start_date=" + endDateString + "&end_date=" + startDateString;
+        fetchDataAbstract(apiString).then(new_data => additionalImageDataHandler(new_data));
 
-        fetch(apiString)
-        .then(response => response.json())
-        .then(data => additionalImageDataHandler(data));
-
-        let dateOffset : number = (24 * 60 * 60 * 1000) * 6;
-        let nextDate : Date = new Date();
-        nextDate.setTime(startDate.getTime() - dateOffset);
-        setNextAvailableDate(nextDate.toString());
-    }
-
-    const formatDate = (myDate : Date) => {
-        let myDays : string = myDate.getDate().toString();
-        let myMonths : string = (myDate.getMonth() + 1).toString();
-        let myYear : string = myDate.getFullYear().toString();
-        let myString : string = myYear + "-" + myMonths.padStart(2, "0") + "-" + myDays.padStart(2, "0");
-        return myString;
-    }
-
-    const fetchAdditionalDataRandom = () => {
-        fetch('https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&count=5')
-        .then(response => response.json())
-        .then(data => additionalImageDataHandler(data));
+        let nextDate : string = helper_functions.getNextDate(nextAvailableDate);
+        setNextAvailableDate(nextDate);
     }
 
     const fetchImageDataRandom = () => {
         let apiString : string = 'https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&count=5';
-        fetch(apiString)
-        .then(response => response.json())
-        .then(data => imageDataHandler(data));
+        fetchDataAbstract(apiString).then(new_data => imageDataHandler(new_data));
+    }
+
+    const fetchAdditionalDataRandom = () => {
+        let apiString : string = 'https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&count=5';
+        fetchDataAbstract(apiString).then(new_data => additionalImageDataHandler(new_data));
     }
 
     const imageDataHandler = (data : any) => {
@@ -166,7 +146,6 @@ export default function ApplicationBody(props : any) {
         }
         setImageData(data);
         setImageDataLoaded(true);
-        console.log("Image data loaded");
         props.onDataLoaded();
     }
 
@@ -180,22 +159,17 @@ export default function ApplicationBody(props : any) {
         props.onExtraDataLoaded(); 
     }
 
+    const savedImageDataHandler = (data : any) => {
+        setImageData(data);
+        setImageDataLoaded(true);
+        props.onDataLoaded();
+    }
+
     const styleProps = {
         "backgroundColor": "#e1e1e1",
         "paddingTop": "10px",
         "paddingBottom": "20px",
         "minHeight": "calc(100vh - 65px)"
-    }
-
-    const CustomProgress = (props : any) => {
-        const customProgressStyleProps = {
-            "marginTop": "50vh"
-        }
-        return (
-            <div style={customProgressStyleProps}>
-                <CircularProgress />
-            </div>
-        )
     }
 
     return (

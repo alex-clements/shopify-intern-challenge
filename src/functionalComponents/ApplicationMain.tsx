@@ -22,7 +22,6 @@ export default function ApplicationMain(props : any) {
     
 
     useEffect(() => {
-        console.log("Application Main");
         initializeViewMode();
     }, [])
 

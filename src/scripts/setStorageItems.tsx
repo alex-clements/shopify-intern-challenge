@@ -12,6 +12,5 @@ export default function setStorageItems(val : string, add : boolean) {
         }
     }
     
-    console.log(val);
     localStorage.setItem("likedPics", JSON.stringify(likedPicsParsed));
 }

@@ -12,11 +12,7 @@ import MainMenu from './MainMenu';
 export default function ApplicationBar(props : any) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuButtonRef = useRef(null);
-
-    useEffect(() => {
-        console.log("Application Bar");
-    }, [])
-
+    
     const rocketStyle = {
         marginX: 1,
     }
