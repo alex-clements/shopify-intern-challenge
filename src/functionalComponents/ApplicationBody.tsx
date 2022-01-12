@@ -169,7 +169,7 @@ export default function ApplicationBody(props : any) {
         "backgroundColor": "#e1e1e1",
         "paddingTop": "10px",
         "paddingBottom": "20px",
-        "minHeight": "calc(100vh - 65px)"
+        "minHeight": "calc(100vh - 200px)",
     }
 
     return (
