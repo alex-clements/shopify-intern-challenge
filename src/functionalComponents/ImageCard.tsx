@@ -48,7 +48,7 @@ export default function ImageCard(props : any) {
             <Card sx={{maxWidth: 300, margin: "auto"}}>
                 <div onClick={handleClick}>
                     <CardMediaComponent imageURL={imageData['url']} />
-                    <CardContent sx={{paddingX: 0, paddingBottom: 1}}>
+                    <CardContent sx={{paddingX: 0, paddingBottom: 0, "&:last-child": {paddingBottom: 0}}}>
                         <Accordion expanded={expanded} imageDate={imageData['date']} imageTitle={imageData['title']} imageExplanation={imageData['explanation']} />
                     </CardContent>
                 </div>

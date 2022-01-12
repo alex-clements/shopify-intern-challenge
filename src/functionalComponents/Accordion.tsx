@@ -37,9 +37,14 @@ export default function Accordion(props : any) {
         "text-align": "left"
     }
 
+    const titleContainerProps = {
+        "paddingLeft": "10px",
+        "paddingRight": "10px",
+    }
+
     return (
         <div>
-            <div>
+            <div style={titleContainerProps}>
                 <Typography gutterBottom variant="h5" component="div">{imageTitle}</Typography>
                 <Typography variant="body1" color="text.secondary">{imageDate}</Typography>
             </div>
