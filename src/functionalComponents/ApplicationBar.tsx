@@ -40,7 +40,7 @@ export default function ApplicationBar(props : any) {
                     <RocketLaunch sx={rocketStyle} />
                 </motion.div>
                 <Spacer />
-                <IconButton ref={menuButtonRef} onClick={toggleMenu} size="large" edge="end" sx={{mr: 2}}>
+                <IconButton ref={menuButtonRef} onClick={toggleMenu} size="large" edge="end">
                     <MenuIcon />
                 </IconButton>
             </Toolbar>
