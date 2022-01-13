@@ -22,6 +22,7 @@ export default function ApplicationMain(props : any) {
     
 
     useEffect(() => {
+        console.log(process.env.REACT_APP_API_KEY);
         initializeViewMode();
     }, [])
 

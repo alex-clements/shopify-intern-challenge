@@ -174,7 +174,7 @@ export default function ApplicationBody(props : any) {
 
     return (
         <div style={styleProps}>
-                {imageDataLoaded ? imageData.map((item, index) => <ImageCard data={item} key={index} />) : <CustomProgress />}
+                {imageDataLoaded ? imageData.map((item, index) => <ImageCard data={item} key={index} componentTabIndex={index * 2 + 2} />) : <CustomProgress />}
         </div>
     )
 }

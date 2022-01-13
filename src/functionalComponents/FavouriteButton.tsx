@@ -9,6 +9,7 @@ export default function FavouriteButton(props : any) {
     const [clicked, setClicked] = useState(isInStorage(props.imageDate));
     const [clickBounce, setClickBounce] = useState(false);
     const [imageDate, setImageDate] = useState(props.imageDate);
+    const [componentTabIndex, setComponentTabIndex] = useState(props.componentTabIndex);
 
     const handleClick = (e : React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
@@ -31,8 +32,8 @@ export default function FavouriteButton(props : any) {
     }
 
     return (
-        <motion.div whileHover={{scale: 1.2}} onClick={handleClick} animate={animation()} transition={{duration: 0.4}}>
+        <motion.button tabIndex={componentTabIndex} style={{"borderWidth": "0px", "backgroundColor": "white"}} whileHover={{scale: 1.2}} onClick={handleClick} animate={animation()} transition={{duration: 0.4}}>
             {clicked ? <Favorite sx={{color: "pink"}} /> : <FavoriteBorder sx={{color: "pink"}} />}
-        </motion.div>
+        </motion.button>
     )
 }
