@@ -5,7 +5,7 @@ export default function fetchSavedData(input_array : Array<string>) : Promise<an
     let apiString : string;
 
     input_array.forEach((dateString) => {
-        apiString = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&date=" + dateString
+        apiString = "&date=" + dateString
         myPromises.push(
             fetchDataAbstract(apiString)
         )

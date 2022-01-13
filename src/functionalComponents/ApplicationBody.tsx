@@ -111,7 +111,7 @@ export default function ApplicationBody(props : any) {
         let startDateString : string = startDateEndDateStrings[0];
         let endDateString : string = startDateEndDateStrings[1];
 
-        let apiString = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&start_date=" + endDateString + "&end_date=" + startDateString;
+        let apiString = "&start_date=" + endDateString + "&end_date=" + startDateString;
         fetchDataAbstract(apiString).then(new_data => imageDataHandler(new_data));
 
         let nextDate : string = helper_functions.getNextDate(nextAvailableDate);
@@ -123,7 +123,7 @@ export default function ApplicationBody(props : any) {
         let startDateString : string = startDateEndDateStrings[0];
         let endDateString : string = startDateEndDateStrings[1];
 
-        let apiString = "https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&start_date=" + endDateString + "&end_date=" + startDateString;
+        let apiString = "&start_date=" + endDateString + "&end_date=" + startDateString;
         fetchDataAbstract(apiString).then(new_data => additionalImageDataHandler(new_data));
 
         let nextDate : string = helper_functions.getNextDate(nextAvailableDate);
@@ -131,12 +131,12 @@ export default function ApplicationBody(props : any) {
     }
 
     const fetchImageDataRandom = () => {
-        let apiString : string = 'https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&count=5';
+        let apiString : string = '&count=5';
         fetchDataAbstract(apiString).then(new_data => imageDataHandler(new_data));
     }
 
     const fetchAdditionalDataRandom = () => {
-        let apiString : string = 'https://api.nasa.gov/planetary/apod?api_key=Bm1rwlnBAeqpKdnPnc5Qqke49sbZONaRPJvejW0O&count=5';
+        let apiString : string = '&count=5';
         fetchDataAbstract(apiString).then(new_data => additionalImageDataHandler(new_data));
     }
 
