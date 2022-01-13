@@ -22,7 +22,7 @@ export default function ImageCard(props : any) {
 
     const initialStuff = {
         "opacity": "0%",
-        "boxShadow": "0px 2px 0px 2px #888888",
+        "boxShadow": "0px 0px 5px 3px #888888",
     }
 
     const variants = {

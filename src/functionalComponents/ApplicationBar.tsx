@@ -8,27 +8,44 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import DrawerComponent from './DrawerComponent';
 
-export default function ApplicationBar(props : any) {
+
+/**
+ * Top application bar functional component.
+ * @param props React props.  Need to be of the type ApplicationBarProps.
+ * @returns React functional component.
+ */
+export default function ApplicationBar(props : ApplicationBarProps) {
     const [menuOpen, setMenuOpen] = useState(false);
-    const menuButtonRef = useRef(null);
     
+    /**
+     * Style props for the rocket icon.
+     */
     const rocketStyle = {
         marginX: 1,
     }
 
-    const Spacer = (props : any) => {
+    /**
+     * React component acting as a spacer between elements on the left and right sides of the application bar.
+     * @returns React component.
+     */
+    const Spacer = () => {
         return (
-        <div style={{flexGrow: 1}}>
-
-        </div>
+        <div style={{flexGrow: 1}} />
         )
     }
 
+    /**
+     * Opens and closes the menu by setting the "menuOpen" state variable.
+     */
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     }
 
-    const handleMenuItemClick = (e : string) => {
+    /**
+     * Sends the selected view mode to the parent component.
+     * @param e One of the accepted view modes.
+     */
+    const handleMenuItemClick = (e : ViewMode) => {
         props.onMenuItemClick(e);
     }
 
@@ -40,7 +57,7 @@ export default function ApplicationBar(props : any) {
                     <RocketLaunch sx={rocketStyle} />
                 </motion.div>
                 <Spacer />
-                <IconButton tabIndex={1} ref={menuButtonRef} onClick={toggleMenu} size="large" edge="end">
+                <IconButton tabIndex={1} onClick={toggleMenu} size="large" edge="end">
                     <MenuIcon />
                 </IconButton>
             </Toolbar>

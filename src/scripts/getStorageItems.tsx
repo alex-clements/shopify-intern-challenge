@@ -1,6 +1,8 @@
-import React from 'react';
-
-export default function getStorageItems() {
+/**
+ * Retrieves an array of the dates of liked pictures from the browser's local storage.
+ * @returns Array of the dates of all liked pictures.  Dates are strings in the format "YYYY-MM-DD".
+ */
+export default function getStorageItems() : Array<string> {
 
     let likedPics = localStorage.getItem("likedPics");
 
@@ -10,5 +12,5 @@ export default function getStorageItems() {
         localStorage.setItem("likedPics", JSON.stringify([]));
     }
 
-    return localStorage.getItem("likedPics");
+    return []
 }

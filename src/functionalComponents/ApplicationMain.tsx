@@ -4,11 +4,11 @@ import ApplicationBar from './ApplicationBar';
 import ApplicationBody from './ApplicationBody';
 import LoadMoreData from './LoadMoreData';
 
-const initializeViewMode = () : string => {
+const initializeViewMode = () : ViewMode => {
     const name : string | null = localStorage.getItem("viewMode");
 
     if (name) {
-        return name;
+        return name as ViewMode;
     } else {
         return "random";
     }
@@ -17,7 +17,7 @@ const initializeViewMode = () : string => {
 export default function ApplicationMain(props : any) {
     const [dataLoaded, setDataLoaded] = useState(false);
     const [loadMoreData, setLoadMoreData] = useState(false);
-    const [viewMode, setViewMode] = useState(initializeViewMode());
+    const [viewMode, setViewMode] = useState<ViewMode>(initializeViewMode());
     const [moreData, setMoreData] = useState(true);
     
 
@@ -36,8 +36,6 @@ export default function ApplicationMain(props : any) {
     const handleExtraDataLoaded = () => {
         setLoadMoreData(false);
     }
-
-    type ViewMode = "random" | "chronological" | "saved";
 
     const handleMenuItemClick = (e : ViewMode) => {
         setViewMode(e);

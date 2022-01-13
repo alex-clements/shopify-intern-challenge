@@ -7,18 +7,18 @@ import {HelperFunctions} from '../scripts/HelperFunctions';
 import CustomProgress from './CustomProgress';
 import fetchSavedData from '../scripts/fetchSavedData';
 
-
-export default function ApplicationBody(props : any) {
+export default function ApplicationBody(props : ApplicationBodyProps) {
     let helper_functions : HelperFunctions = new HelperFunctions();
-
-
     const [imageData, setImageData] = useState<Array<any>>([]);
-    const [imageDataLoaded, setImageDataLoaded] = useState(false);
-    const [viewMode, setViewMode] = useState(props.viewMode);
-    const [nextAvailableDate, setNextAvailableDate] = useState(new Date().toString())
-    const [currentSavedIndex, setCurrentSavedIndex] = useState(0);
-    const [savedImageDates, setSavedImageDates] = useState(getStorageItems());
+    const [imageDataLoaded, setImageDataLoaded] = useState<boolean>(false);
+    const [viewMode, setViewMode] = useState<ViewMode>(props.viewMode);
+    const [nextAvailableDate, setNextAvailableDate] = useState<string>(new Date().toString())
+    const [currentSavedIndex, setCurrentSavedIndex] = useState<number>(0);
+    const [savedImageDates, setSavedImageDates] = useState<Array<string>>(getStorageItems());
 
+    /**
+     * Calls a data fetching function depending on the view mode
+     */
     useEffect(() => {
         switch (viewMode) {
             case "random": {
@@ -36,6 +36,9 @@ export default function ApplicationBody(props : any) {
         }
     }, [])
 
+    /**
+     * Called when the loadMoreData prop changed. Calls specific data fetching function for additional data, depending on the viewMode.
+     */
     useEffect(() => {
         if (props.loadMoreData) {
             switch(viewMode) {
@@ -54,10 +57,16 @@ export default function ApplicationBody(props : any) {
         }
     }, [props.loadMoreData]);
 
+    /**
+     * Called when the viewMode prop changes. Sets the viewMode state variable to the new viewMode prop.
+     */
     useEffect(() => {
         setViewMode(props.viewMode);
     }, [props.viewMode])
 
+    /**
+     * Initial image data fetch for the saved viewMode
+     */
     const fetchImageDataSaved = () => {
         let allDates : Array<string> = savedImageDates;
         let index : number = currentSavedIndex;
@@ -82,6 +91,9 @@ export default function ApplicationBody(props : any) {
         setCurrentSavedIndex(index + 5);
     }
 
+    /**
+     * Additional data fetch for the saved viewMode
+     */
     const fetchAdditionalSavedImage = () => {
         let allDates : Array<string> = savedImageDates;
         let index : number = currentSavedIndex;
@@ -106,6 +118,9 @@ export default function ApplicationBody(props : any) {
         
     }
 
+    /**
+     * Initial data fetch for the chronological viewMode
+     */
     const fetchImageDataChron = async () => {
         let startDateEndDateStrings = helper_functions.getEndDateStartDate(nextAvailableDate);
         let startDateString : string = startDateEndDateStrings[0];
@@ -165,6 +180,9 @@ export default function ApplicationBody(props : any) {
         props.onDataLoaded();
     }
 
+    /**
+     * Style props for the Application Body wrapper.
+     */
     const styleProps = {
         "backgroundColor": "#e1e1e1",
         "paddingTop": "10px",
