@@ -48,7 +48,7 @@ export default function Accordion(props : any) {
                 <Typography gutterBottom variant="h5" component="div">{imageTitle}</Typography>
                 <Typography variant="body1" color="text.secondary">{imageDate}</Typography>
             </div>
-            <motion.div style={styleProps} initial={initialBodyProps} animate={{height: expanded ? bodyHeight : 0}} >
+            <motion.div style={styleProps} initial={initialBodyProps} animate={{height: expanded ? bodyHeight : 0}} transition={{type: "easeInOut"}} >
                 <div style={bodyContainerProps}>
                     <Typography ref={bodyRef} variant="body2" color="text.secondary">{imageExplanation}</Typography>
                 </div>
