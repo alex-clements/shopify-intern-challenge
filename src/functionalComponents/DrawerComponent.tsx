@@ -19,11 +19,6 @@ export default function DrawerComponent(props : any) {
     const [menuOpen, setMenuOpen] = useState(props.menuOpen);
 
     useEffect(() => {
-        console.log("Drawer mounted");
-    }, []);
-
-    useEffect(() => {
-        console.log("menuOpen updated");
         setMenuOpen(!menuOpen);
     }, [props.menuOpen]);
 
