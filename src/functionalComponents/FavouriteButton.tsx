@@ -5,12 +5,20 @@ import {motion} from 'framer-motion';
 import setStorageItems from '../scripts/setStorageItems';
 import isInStorage from '../scripts/isInStorage';
 
-export default function FavouriteButton(props : any) {
+/**
+ * Component for the favourite / like button.
+ * @param props React props.
+ * @returns React functional component.
+ */
+export default function FavouriteButton(props : FavouriteButtonProps) {
     const [clicked, setClicked] = useState(isInStorage(props.imageDate));
     const [clickBounce, setClickBounce] = useState(false);
     const [imageDate, setImageDate] = useState(props.imageDate);
-    const [componentTabIndex, setComponentTabIndex] = useState(props.componentTabIndex);
 
+    /**
+     * handler for the click event.
+     * @param e React mouse event.
+     */
     const handleClick = (e : React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         setClicked(!clicked);
@@ -19,6 +27,10 @@ export default function FavouriteButton(props : any) {
         setTimeout(function(){setClickBounce(!clickBounce)}, 200);
     }
 
+    /**
+     * Sets the animation when the button is clicked.
+     * @returns props for the button animation.
+     */
     const animation = () => {
         if (!clicked) {
             return {
@@ -32,7 +44,8 @@ export default function FavouriteButton(props : any) {
     }
 
     return (
-        <motion.button tabIndex={componentTabIndex} style={{"borderWidth": "0px", "backgroundColor": "white"}} whileHover={{scale: 1.2}} onClick={handleClick} animate={animation()} transition={{duration: 0.4}}>
+        <motion.button tabIndex={0} style={{"borderWidth": "0px", "backgroundColor": "white"}} 
+        whileHover={{scale: 1.2}} onClick={handleClick} animate={animation()} transition={{duration: 0.4}}>
             {clicked ? <Favorite sx={{color: "pink"}} /> : <FavoriteBorder sx={{color: "pink"}} />}
         </motion.button>
     )

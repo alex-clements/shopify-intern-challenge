@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import {motion} from 'framer-motion';
-import { MotionPhotosOffSharp } from '@mui/icons-material';
-import { isAbsolute } from 'path/posix';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
-import { ClassNames } from '@emotion/react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -15,39 +11,47 @@ import AccessTime from '@mui/icons-material/AccessTime';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Shuffle from '@mui/icons-material/Shuffle';
 
-export default function DrawerComponent(props : any) {
+/**
+ * Drawer side menu component.
+ * @param props React props.
+ * @returns React functional component.
+ */
+export default function DrawerComponent(props : DrawerProps) {
     const [menuOpen, setMenuOpen] = useState(props.menuOpen);
 
+    /**
+     * sets the menuOpen state variable when the menuOpen prop changes.
+     */
     useEffect(() => {
         setMenuOpen(!menuOpen);
     }, [props.menuOpen]);
 
-    const initialProps = {
-        width: "0px"
-    }
-
-    const animateProps = {
-        width: menuOpen ? "300px" : "0px"
-    }
-
-    const handleSwipe = (event : React.MouseEvent) => {
+    /**
+     * handler for click away / swipe away on drawer menu.
+     */
+    const handleSwipe = () => {
         props.onMenuClickAway();
     }
 
-    const styles = {
-        paper: "backgroundColor : blue"
-    }
-
+    /**
+     * handles the click event for the chronological menu item.
+     */
     const chronologicalMenuItemClick = () => {
         props.onMenuItemClick("chronological");
         props.onMenuClickAway()
     }
 
+    /**
+     * handles the click event for the saved menu item.
+     */
     const savedMenuItemClick = () => {
         props.onMenuItemClick("saved");
         props.onMenuClickAway()
     }
 
+    /**
+     * handles the click event for the random menu item.
+     */
     const randomMenuItemClick = () => {
         props.onMenuItemClick("random");
         props.onMenuClickAway()

@@ -1,5 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
+/**
+ * Custom hook to indicate if a component is visible on the screen.
+ * @param ref React Mutable Reference Obejct
+ * @returns boolean.
+ */
 export default function useVisible(ref : any) {
     const [isOnScreen, setIsOnScreen] = useState(false);
 

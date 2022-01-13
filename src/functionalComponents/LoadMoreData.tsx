@@ -1,18 +1,30 @@
 import React, {useEffect, useRef} from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { autocompleteClasses } from '@mui/material';
 import useVisible from '../hooks/useVisible';
 
-export default function LoadMoreData(props : any) {
+/**
+ * Circular progress component that triggers additional data fetch when visible
+ * on the screen.
+ * @param props React props.
+ * @returns React functional component.
+ */
+export default function LoadMoreData(props : LoadMoreDataProps) {
     const elementRef = useRef(null);
     const isVisible = useVisible(elementRef);
 
+    /**
+     * Triggered when the isVisible state variable changes.
+     * Calls the onVisible function in the parent component.
+     */
     useEffect(() => {
         if (isVisible) {
             props.onVisible();
         }
     }, [isVisible])
 
+    /**
+     * Style props for the wrapper div
+     */
     const styleProps = {
         backgroundColor: "#e1e1e1",
         height: 100,

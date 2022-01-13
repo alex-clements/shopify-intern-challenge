@@ -1,7 +1,11 @@
 import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function CustomProgress(props : any) {
+/**
+ * Progress wheel component
+ * @returns React functional component
+ */
+export default function CustomProgress() {
     const customProgressStyleProps = {
         "marginTop": "50vh"
     }

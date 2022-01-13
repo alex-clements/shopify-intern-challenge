@@ -7,6 +7,11 @@ import {HelperFunctions} from '../scripts/HelperFunctions';
 import CustomProgress from './CustomProgress';
 import fetchSavedData from '../scripts/fetchSavedData';
 
+/**
+ * Functional component for the main body of the application.
+ * @param props React props.
+ * @returns React functional component.
+ */
 export default function ApplicationBody(props : ApplicationBodyProps) {
     let helper_functions : HelperFunctions = new HelperFunctions();
     const [imageData, setImageData] = useState<Array<any>>([]);
@@ -81,7 +86,7 @@ export default function ApplicationBody(props : ApplicationBodyProps) {
         }
 
         fetchSavedData(myArray)
-        .then(data => savedImageDataHandler(data))
+        .then(data => imageDataHandler(data))
         .then(() => {
             if (i >= allDates.length) {
                 props.onNoMoreData();
@@ -133,6 +138,9 @@ export default function ApplicationBody(props : ApplicationBodyProps) {
         setNextAvailableDate(nextDate);
     }
 
+    /**
+     * Additional data fetch for the chronological viewMode.
+     */
     const fetchAdditionalDataChron = () => {
         let startDateEndDateStrings = helper_functions.getEndDateStartDate(nextAvailableDate);
         let startDateString : string = startDateEndDateStrings[0];
@@ -145,17 +153,29 @@ export default function ApplicationBody(props : ApplicationBodyProps) {
         setNextAvailableDate(nextDate);
     }
 
+    /**
+     * Initial data fetch for the random viewMode.
+     */
     const fetchImageDataRandom = () => {
         let apiString : string = '&count=5';
         fetchDataAbstract(apiString).then(new_data => imageDataHandler(new_data));
     }
 
+    /**
+     * Additional data fetch for the random viewMode.
+     */
     const fetchAdditionalDataRandom = () => {
         let apiString : string = '&count=5';
         fetchDataAbstract(apiString).then(new_data => additionalImageDataHandler(new_data));
     }
 
-    const imageDataHandler = (data : any) => {
+    /**
+     * Initial data fetch handler. Sets the imageData state variable to the received data.
+     * Sets the imageDataLoaded state variable to true.
+     * Calls the onDataLoaded function in the parent component.
+     * @param data data provided by the NASA APOD API.  Array of strings.
+     */
+    const imageDataHandler = (data : Array<string>) => {
         if (viewMode == "chronological") {
             data = data.reverse();
         }
@@ -164,7 +184,11 @@ export default function ApplicationBody(props : ApplicationBodyProps) {
         props.onDataLoaded();
     }
 
-    const additionalImageDataHandler = (data : any) => {
+    /**
+     * Handles subsequent data fetches from the NASA APOD API.
+     * @param data Array of strings. Data returned by the NASA APOD API.
+     */
+    const additionalImageDataHandler = (data : Array<string>) => {
         if (viewMode == "chronological") {
             data = data.reverse();
         }
@@ -172,12 +196,6 @@ export default function ApplicationBody(props : ApplicationBodyProps) {
         const newArray = existingImageData.concat(data);
         setImageData(newArray);
         props.onExtraDataLoaded(); 
-    }
-
-    const savedImageDataHandler = (data : any) => {
-        setImageData(data);
-        setImageDataLoaded(true);
-        props.onDataLoaded();
     }
 
     /**
@@ -192,7 +210,8 @@ export default function ApplicationBody(props : ApplicationBodyProps) {
 
     return (
         <div style={styleProps}>
-                {imageDataLoaded ? imageData.map((item, index) => <ImageCard data={item} key={index} componentTabIndex={index * 2 + 2} />) : <CustomProgress />}
+                {imageDataLoaded ? imageData.map((item, index) => 
+                <ImageCard data={item} key={index} />) : <CustomProgress />}
         </div>
     )
 }
